@@ -142,7 +142,7 @@ const TicketForm = ({
 									<option value='in_progress'>
 										In Progress
 									</option>
-									<option value='closed'>Closed</option>
+									<option value='closed'>Resolved</option>
 								</select>
 								{getFieldStatus('status') === 'success' && (
 									<Check className='absolute right-3 top-3 w-5 h-5 text-green-500' />

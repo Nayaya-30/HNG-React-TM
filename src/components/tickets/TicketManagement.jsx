@@ -217,15 +217,6 @@ const TicketManagementApp = ({
 					showToast={showToast}
 				/>
 			</div>
-
-			{/* ======= FOOTER ======= */}
-			<footer className='bg-gray-900 text-white py-12 mt-20'>
-				<div className='max-w-[1440px] mx-auto px-3 sm:px-4 lg:px-5 text-center'>
-					<p className='text-gray-400'>
-						© 2025 TiMaFlow. All rights reserved.
-					</p>
-				</div>
-			</footer>
 		</div>
 	);
 };

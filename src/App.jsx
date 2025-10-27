@@ -4,6 +4,7 @@ import { LandingPage } from './components/landing/LandingPage';
 import { LoginPage } from './components/auth/LoginPage';
 import { SignupPage } from './components/auth/SignupPage';
 import { Dashboard } from './components/dashboard/Dashboard';
+import Footer from './components/common/Footer';
 import { ThemeProvider } from './context/ThemeContext';
 import Toast from './components/common/Toast';
 import { getSession, getCurrentUser } from './utils/auth';
@@ -133,6 +134,7 @@ function App() {
 	return (
 		<ThemeProvider>
 			{renderPage()}
+			<Footer />
 			{toast && (
 				<Toast
 					message={toast.message}
