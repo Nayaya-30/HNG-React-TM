@@ -4,8 +4,10 @@ import { TicketList } from './TicketList';
 import { TicketForm } from './TicketForm';
 import { getTickets, saveTickets, getCurrentUser } from '../../utils/storage';
 import Logo from '../common/Logo';
+import { useNavigate } from 'react-router-dom';
+import { DarkModeToggle } from '../../context/DarkModeToggle'
 
-const TicketManagementApp = ({
+const TicketManagementPage = ({
 	setCurrentPage,
 	currentUser,
 	handleLogout,
@@ -124,8 +126,11 @@ const TicketManagementApp = ({
 		setShowForm(true);
 	};
 
+	const navigate = useNavigate();
+
+
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900'>
+		<div className='page min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900'>
 			{/* ======= NAVBAR ======= */}
 			<nav className='bg-white shadow-sm border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700'>
 				<div className='max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8'>
@@ -133,15 +138,18 @@ const TicketManagementApp = ({
 						<Logo />
 						<div className='flex items-center gap-4'>
 							{/* Dashboard Button (Desktop) */}
+							<DarkModeToggle />
+
 							<button
-								onClick={() => setCurrentPage('dashboard')}
-								className='hidden md:inline-flex items-center text-gray-600 hover:text-gray-800 font-medium dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md'>
+								onClick={() => navigate('/dashboard')}
+								className="hidden md:inline-flex items-center text-gray-600 hover:text-gray-800 font-medium dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md"
+							>
 								Dashboard
 							</button>
 
 							{/* Dashboard Icon (Mobile) */}
 							<button
-								onClick={() => setCurrentPage('dashboard')}
+								onClick={() => navigate('/dashboard')}
 								className='inline-flex md:hidden items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
 								aria-label='Dashboard'>
 								<Ticket className='w-5 h-5' />
@@ -221,5 +229,5 @@ const TicketManagementApp = ({
 	);
 };
 
-export { TicketManagementApp };
+export { TicketManagementPage };
 

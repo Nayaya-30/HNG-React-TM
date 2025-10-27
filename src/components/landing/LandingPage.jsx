@@ -4,7 +4,7 @@ import { FeaturesSection } from './FeaturesSection';
 
 const LandingPage = ({ setCurrentPage }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="page min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       <HeroSection setCurrentPage={setCurrentPage} />
       <FeaturesSection />
     </div>

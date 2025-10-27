@@ -2,7 +2,7 @@ import React from 'react';
 import { Twitter, Github, Linkedin } from 'lucide-react';
 
 const Footer = () => (
-  <footer className="bg-gray-900 text-white py-12">
+  <footer className="bg-gray-900 text-white py-6">
     <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-center sm:text-left">
