@@ -8,7 +8,11 @@ const AnalyticsChart = ({ tickets }) => {
 	const showLoading = useLoadingDelay(isLoading);
 
 	useEffect(() => {
-		if (!tickets || tickets.length === 0) return;
+		if (!tickets || tickets.length === 0) {
+			// nothing to render, ensure loading is off
+			setIsLoading(false);
+			return;
+		}
 		setIsLoading(true);
 
 		// Clear previous chart
@@ -34,31 +38,33 @@ const AnalyticsChart = ({ tickets }) => {
 			.attr('transform', `translate(${margin.left},${margin.top})`);
 
 		// Process data - group tickets by date and status
-		const ticketsByDate = d3.rollup(
-			tickets,
-			(v) => ({
-				total: v.length,
-				open: v.filter((t) => t.status === 'open').length,
-				inProgress: v.filter((t) => t.status === 'in-progress').length,
-				completed: v.filter((t) => t.status === 'completed').length,
-			}),
-			(d) => d3.timeDay(new Date(d.createdAt))
-		);
+			const ticketsByDate = d3.rollup(
+				tickets,
+				(v) => ({
+					total: v.length,
+					open: v.filter((t) => t.status === 'open').length,
+					inProgress: v.filter((t) => t.status === 'in_progress').length,
+					completed: v.filter((t) => t.status === 'closed').length,
+				}),
+				(d) => d3.timeDay(new Date(d.createdAt))
+			);
 
 		const data = Array.from(ticketsByDate, ([date, counts]) => ({
 			date,
 			...counts,
 		})).sort((a, b) => a.date - b.date);
 
-		// Create scales
+		// For a bar chart we use a band scale for x and linear for y
 		const xScale = d3
-			.scaleTime()
-			.domain(d3.extent(data, (d) => d.date))
-			.range([0, width]);
+			.scaleBand()
+			.domain(data.map((d) => d3.timeFormat('%m/%d')(d.date)))
+			.range([0, width])
+			.padding(0.2);
 
 		const yScale = d3
 			.scaleLinear()
-			.domain([0, d3.max(data, (d) => d.total)])
+			.domain([0, d3.max(data, (d) => d.total) || 1])
+			.nice()
 			.range([height, 0]);
 
 		// Add gradient definitions
@@ -84,10 +90,7 @@ const AnalyticsChart = ({ tickets }) => {
 			.attr('class', 'dark:stop-blue-900/20 stop-blue-500/20');
 
 		// Create axes
-		const xAxis = d3
-			.axisBottom(xScale)
-			.ticks(5)
-			.tickFormat(d3.timeFormat('%m/%d'));
+		const xAxis = d3.axisBottom(xScale);
 
 		const yAxis = d3.axisLeft(yScale).ticks(5);
 
@@ -144,71 +147,44 @@ const AnalyticsChart = ({ tickets }) => {
 			.duration(1000)
 			.attr('stroke-dashoffset', 0);
 
-		// Add area
-		const area = d3
-			.area()
-			.x((d) => xScale(d.date))
-			.y0(height)
-			.y1((d) => yScale(d.total))
-			.curve(d3.curveMonotoneX);
-
-		svg.append('path')
-			.datum(data)
-			.attr(
-				'class',
-				'fill-current text-blue-500/20 dark:text-blue-900/20'
-			)
-			.attr('d', area);
-
-		// Add data points with enhanced interactivity
-		const dots = svg
-			.selectAll('.dot')
+		// Create bars for bar chart
+		svg.selectAll('.bar')
 			.data(data)
 			.enter()
-			.append('g')
-			.attr('class', 'dot')
-			.attr(
-				'transform',
-				(d) => `translate(${xScale(d.date)},${yScale(d.total)})`
-			);
-
-		dots.append('circle')
-			.attr('r', 4)
-			.attr(
-				'class',
-				'fill-blue-500 dark:fill-blue-400 transition-all duration-200'
-			)
+			.append('rect')
+			.attr('class', 'bar fill-blue-500 dark:fill-blue-400')
+			.attr('x', (d) => xScale(d3.timeFormat('%m/%d')(d.date)))
+			.attr('y', (d) => yScale(d.total))
+			.attr('width', xScale.bandwidth())
+			.attr('height', (d) => height - yScale(d.total))
 			.on('mouseover', function (event, d) {
-				d3.select(this).transition().duration(200).attr('r', 6);
-
-				const tooltip = d3
+				d3.select(this).transition().duration(150).attr('opacity', 0.8);
+				// tooltip
+				d3.select(chartRef.current)
+					.selectAll('.chart-tooltip')
+					.remove();
+				const tt = d3
 					.select(chartRef.current)
 					.append('div')
 					.attr(
 						'class',
-						'absolute bg-white dark:bg-gray-800 p-2 rounded shadow-lg text-sm z-50 pointer-events-none'
+						'chart-tooltip absolute bg-white dark:bg-gray-800 p-2 rounded shadow-lg text-sm z-50 pointer-events-none'
 					)
 					.style('left', event.pageX + 10 + 'px')
 					.style('top', event.pageY - 10 + 'px');
-
-				tooltip.html(`
-					<div class="font-semibold">${d3.timeFormat('%B %d, %Y')(d.date)}</div>
-					<div class="grid grid-cols-2 gap-2">
-						<div>Total:</div>
-						<div class="font-medium">${d.total}</div>
-						<div class="text-green-500">Completed:</div>
-						<div class="font-medium">${d.completed}</div>
-						<div class="text-yellow-500">In Progress:</div>
-						<div class="font-medium">${d.inProgress}</div>
-						<div class="text-blue-500">Open:</div>
-						<div class="font-medium">${d.open}</div>
-					</div>
-				`);
+				tt.html(`
+						<div class="font-semibold">${d3.timeFormat('%B %d, %Y')(d.date)}</div>
+						<div>Total: <strong>${d.total}</strong></div>
+						<div class="text-green-500">Completed: ${d.completed}</div>
+						<div class="text-yellow-500">In Progress: ${d.inProgress}</div>
+						<div class="text-blue-500">Open: ${d.open}</div>
+					`);
 			})
 			.on('mouseout', function () {
-				d3.select(this).transition().duration(200).attr('r', 4);
-
-				d3.select(chartRef.current).selectAll('.absolute').remove();
+				d3.select(this).transition().duration(150).attr('opacity', 1);
+				d3.select(chartRef.current)
+					.selectAll('.chart-tooltip')
+					.remove();
 			});
 
 		// Add title
@@ -218,6 +194,9 @@ const AnalyticsChart = ({ tickets }) => {
 			.attr('text-anchor', 'middle')
 			.attr('class', 'text-xl font-bold text-gray-800 dark:text-white')
 			.text('Tickets Created Over Time');
+
+		// finished rendering
+		setIsLoading(false);
 	}, [tickets]);
 
 	return (
