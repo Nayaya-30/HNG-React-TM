@@ -3,7 +3,6 @@ import { LogOut, Ticket, BarChart3, Check, Search } from 'lucide-react';
 import { StatCard } from './StatCard';
 import { QuickActions } from './QuickActions';
 import { getTickets } from '../../utils/storage';
-import DarkModeToggle from '../common/DarkModeToggle';
 import Logo from '../common/Logo';
 import AnalyticsChart from './AnalyticsChart';
 
@@ -37,7 +36,6 @@ const Dashboard = ({ setCurrentPage, currentUser, handleLogout }) => {
 					<div className='flex justify-between items-center h-16'>
 						<Logo />
 						<div className='flex items-center gap-4'>
-							<DarkModeToggle />
 							{/* icon-only on small screens, text on md+ */}
 							<button
 								onClick={() => setCurrentPage('tickets')}
@@ -75,6 +73,13 @@ const Dashboard = ({ setCurrentPage, currentUser, handleLogout }) => {
 
 				<div className='grid sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12'>
 					<StatCard
+						title='Total Tickets'
+						value={tickets.length}
+						icon={<BarChart3 className='w-6 h-6 text-blue-600' />}
+						bgColor='bg-blue-100 dark:bg-blue-900/30'
+						textColor='text-blue-600'
+					/>
+					<StatCard
 						title='Open Tickets'
 						value={openTickets}
 						icon={<Ticket className='w-6 h-6 text-green-600' />}
@@ -92,15 +97,8 @@ const Dashboard = ({ setCurrentPage, currentUser, handleLogout }) => {
 						title='Resolved Tickets'
 						value={closedTickets}
 						icon={<Check className='w-6 h-6 text-gray-600' />}
-						bgColor='bg-gray-100 dark:bg-gray-700'
-						textColor='text-gray-600'
-					/>
-					<StatCard
-						title='Total Tickets'
-						value={tickets.length}
-						icon={<BarChart3 className='w-6 h-6 text-blue-600' />}
-						bgColor='bg-blue-100 dark:bg-blue-900/30'
-						textColor='text-blue-600'
+						bgColor='bg-purple-100 dark:bg-purple-700/30'
+						textColor='text-puple-600'
 					/>
 				</div>
 
@@ -122,3 +120,4 @@ const Dashboard = ({ setCurrentPage, currentUser, handleLogout }) => {
 };
 
 export { Dashboard };
+

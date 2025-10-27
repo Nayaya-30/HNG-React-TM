@@ -3,7 +3,6 @@ import { LogOut, Plus, Ticket, Search } from 'lucide-react';
 import { TicketList } from './TicketList';
 import { TicketForm } from './TicketForm';
 import { getTickets, saveTickets, getCurrentUser } from '../../utils/storage';
-import DarkModeToggle from '../common/DarkModeToggle';
 import Logo from '../common/Logo';
 
 const TicketManagementApp = ({
@@ -133,8 +132,6 @@ const TicketManagementApp = ({
 					<div className='flex justify-between items-center h-16'>
 						<Logo />
 						<div className='flex items-center gap-4'>
-							<DarkModeToggle />
-
 							{/* Dashboard Button (Desktop) */}
 							<button
 								onClick={() => setCurrentPage('dashboard')}
@@ -223,9 +220,9 @@ const TicketManagementApp = ({
 
 			{/* ======= FOOTER ======= */}
 			<footer className='bg-gray-900 text-white py-12 mt-20'>
-				<div className='max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+				<div className='max-w-[1440px] mx-auto px-3 sm:px-4 lg:px-5 text-center'>
 					<p className='text-gray-400'>
-						© 2025 TicketFlow. All rights reserved.
+						© 2025 TiMaFlow. All rights reserved.
 					</p>
 				</div>
 			</footer>
