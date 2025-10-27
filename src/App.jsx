@@ -9,6 +9,9 @@ import { ThemeProvider } from './context/ThemeContext';
 import { Footer } from './components/common/Footer';
 import Toast from './components/common/Toast';
 import { getSession, getCurrentUser } from './utils/auth';
+import OfflinePopUp from './components/common/IsOffline'
+import { useNetworkStatus } from './hooks/useNetworkStatus'
+
 
 const ProtectedRoute = ({ children }) => {
 	const session = getSession();
@@ -22,6 +25,9 @@ const ProtectedRoute = ({ children }) => {
 function App() {
 	const [toast, setToast] = useState(null);
 	const [currentUser, setCurrentUserState] = useState(null);
+
+	const inOnline = useNetworkStatus();
+
 
 	useEffect(() => {
 		// Create a test account if no users exist
@@ -94,6 +100,7 @@ function App() {
 					<Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
 				)}
 			</Router>
+			<OfflinePopUp isOnline={isOnline} />
 		</ThemeProvider>
 	);
 }
