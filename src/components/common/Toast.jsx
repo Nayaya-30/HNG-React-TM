@@ -7,15 +7,23 @@ const Toast = ({ message, type, onClose }) => {
 		return () => clearTimeout(timer);
 	}, [onClose]);
 
-	const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+	const bgColor =
+		type === 'success'
+			? 'bg-green-500'
+			: type === 'error'
+			? 'bg-red-500'
+			: 'bg-blue-500';
 
 	return (
-		<div className={` min-w-2/3 fixed bottom-6 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 animate-pop-up z-50 max-w-md`}>
-			{type === 'success' && <Check className="w-5 h-5" />}
-			{type === 'error' && <AlertCircle className="w-5 h-5" />}
-			<span className="flex-1">{message}</span>
-			<button onClick={onClose} className="hover:bg-white/20 rounded p-1">
-				<X className="w-4 h-4" />
+		<div
+			className={` sm:min-w-2/3 md:min-w-1/3 fixed bottom-6 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 animate-pop-up z-50 max-w-md`}>
+			{type === 'success' && <Check className='w-5 h-5' />}
+			{type === 'error' && <AlertCircle className='w-5 h-5' />}
+			<span className='flex-1'>{message}</span>
+			<button
+				onClick={onClose}
+				className='hover:bg-white/20 rounded p-1'>
+				<X className='w-4 h-4' />
 			</button>
 		</div>
 	);

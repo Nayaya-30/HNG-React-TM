@@ -5,14 +5,8 @@ import { TicketForm } from './TicketForm';
 import { getTickets, saveTickets, getCurrentUser } from '../../utils/storage';
 import Logo from '../common/Logo';
 import { useNavigate } from 'react-router-dom';
-import { DarkModeToggle } from '../../context/DarkModeToggle'
 
-const TicketManagementPage = ({
-	setCurrentPage,
-	currentUser,
-	handleLogout,
-	showToast,
-}) => {
+const TicketManagementPage = ({ handleLogout, showToast }) => {
 	const [tickets, setTickets] = useState([]);
 	const [filteredTickets, setFilteredTickets] = useState([]);
 	const [showForm, setShowForm] = useState(false);
@@ -128,7 +122,6 @@ const TicketManagementPage = ({
 
 	const navigate = useNavigate();
 
-
 	return (
 		<div className='page min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900'>
 			{/* ======= NAVBAR ======= */}
@@ -138,12 +131,9 @@ const TicketManagementPage = ({
 						<Logo />
 						<div className='flex items-center gap-4'>
 							{/* Dashboard Button (Desktop) */}
-							<DarkModeToggle />
-
 							<button
 								onClick={() => navigate('/dashboard')}
-								className="hidden md:inline-flex items-center text-gray-600 hover:text-gray-800 font-medium dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md"
-							>
+								className='hidden md:inline-flex items-center text-gray-600 hover:text-gray-800 font-medium dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md'>
 								Dashboard
 							</button>
 
@@ -230,4 +220,3 @@ const TicketManagementPage = ({
 };
 
 export { TicketManagementPage };
-
