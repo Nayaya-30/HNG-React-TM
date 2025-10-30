@@ -1,24 +1,46 @@
-# Logs
-logs
-*.log
+# OS / misc
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# IDEs
+/.idea/
+/.vscode/
+/nbproject/
+*.iml
+*.sublime-*
+
+# Node / frontend
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+.pnpm-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Build / compiled assets
+/dist/
+/build/
+/public/build/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Logs, test output, coverage
+*.log
+logs/
+coverage/
+.phpunit.result.cache
+phpunit-result-*
+
+# Generated / archive files
+*.zip
+*.tar.gz
+*.gz
+*.cache
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+.env.backup
+
+# Vite
+.vite/
